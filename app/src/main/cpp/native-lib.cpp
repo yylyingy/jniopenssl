@@ -9,17 +9,35 @@
 #include "MyMD5.h"
 #include "Log.h"
 #include "MyAES.h"
+#include <sys/ptrace.h>
+#include <assert.h>
+#define JNIREG_CLASS "demo/rsa/gkbn/rsademo/JniDemo"
 
-
+#ifdef __cpluscplus
 extern "C" {
+#endif
+jstring getStringc(JNIEnv *env, jobject obj);
+jstring MD5       (JNIEnv *env, jobject instance, jstring msg_);
+jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_);
+jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_);
+jstring encrypt3DES(JNIEnv *env, jobject instance, jstring msg_);
+static JNINativeMethod gMethods[] = {
+        { "getStringFromNative" , "()Ljava/lang/String;", (void*)getStringc},
+        { "MD5"                 , "(Ljava/lang/String;)Ljava/lang/String;",(void*)MD5},
+        {"encryptDES"           , "(Ljava/lang/String;)Ljava/lang/String;",(void*)encryptDES},
+        {"decryptDES"           , "(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptDES},
+        {"encrypt3DES"          , "(Ljava/lang/String;)Ljava/lang/String;",(void*)encrypt3DES}
+
+};
+
 int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* keyin, int keyin_len);
 
-__attribute ((visibility ("default")))
-JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) //这是JNI_OnLoad的声明，必须按照这样的方式声明
-{
-
-    return JNI_VERSION_1_4; //这里很重要，必须返回版本，否则加载会失败。
-}
+//__attribute ((visibility ("default")))
+//JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) //这是JNI_OnLoad的声明，必须按照这样的方式声明
+//{
+//
+//    return JNI_VERSION_1_4; //这里很重要，必须返回版本，否则加载会失败。
+//}
 __attribute ((visibility ("default")))
 JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved) {
     //   __android_log_print(ANDROID_LOG_ERROR, "tag", "library was unload");
@@ -73,8 +91,7 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_decryptBase64(JNIEnv *env, jobject instance, 
  * MD5加密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_MD5(JNIEnv *env, jobject instance, jstring msg_) {
+jstring MD5(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
 
@@ -127,7 +144,6 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_decodeAES(JNIEnv *env, jobject instance, jstr
     std::string msgC;
     msgC.assign(msg);
 
-
     int length;
     std::string base64 = MyBASE64::base64_decodestring(msgC);
 
@@ -145,15 +161,14 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_decodeAES(JNIEnv *env, jobject instance, jstr
 
 
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
     msgC.assign(msg);
 
     int length;
-    std::string key = "12345678";
+    std::string key = "i^FgWOB8IsN47zja^^&eSBup";
     std::string des = My3DES::encryptDES(msgC, key, &length);
 
 
@@ -171,15 +186,14 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_encryptDES(JNIEnv *env, jobject instance, jst
  * DES解密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
 
     std::string msgC;
     msgC.assign(msg);
 
-    std::string key = "12345678";
+    std::string key = "i^FgWOB8IsN47zja^^&eSBup";
     int length;
     std::string base64 = MyBASE64::base64_decodestring(msgC);
 
@@ -241,8 +255,7 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_encryptRSA(JNIEnv *env, jobject instance, jst
 }
 
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_encrypt3DES(JNIEnv *env, jobject instance, jstring msg_){
+JNIEXPORT jstring encrypt3DES(JNIEnv *env, jobject instance, jstring msg_){
     const char* datain;
     char * dataout = (char *) malloc(32);
     int length = env->GetStringUTFLength(msg_);
@@ -356,5 +369,58 @@ int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* key
 
     return 0;
 }
-
+//jstring JNICALL Java_com_example_zbb_test01_MainActivity_getStringFromNative(JNIEnv *env, jobject obj, jstring str) __attribute__((section(".mytext")));
+//JNIEXPORT jstring JNICALL Java_com_example_zbb_test01_MainActivity_getStringFromNative
+__attribute__((section (".mytext")))   jstring getStringc
+        (JNIEnv *env, jobject obj)
+{
+    return env->NewStringUTF( "asdfasdfwe");
 }
+
+
+static int registerNativeMethods(JNIEnv* env, const char* className,
+                                 JNINativeMethod* gMethods, int numMethods)
+{
+    jclass clazz;
+    clazz = env->FindClass( className);
+    if (clazz == NULL) {
+        return JNI_FALSE;
+    }
+    if (env->RegisterNatives(clazz, gMethods, numMethods) < 0) {
+        return JNI_FALSE;
+    }
+
+    return JNI_TRUE;
+}
+static int registerNatives(JNIEnv* env)
+{
+    if (!registerNativeMethods(env, JNIREG_CLASS, gMethods,
+                               sizeof(gMethods) / sizeof(gMethods[0])))
+        return JNI_FALSE;
+
+    return JNI_TRUE;
+}
+void anti_debug(){
+    ptrace(PTRACE_TRACEME,0,0,0);
+}
+
+//__attribute ((visibility ("default")))
+jint JNI_OnLoad(JavaVM* vm,void* reserved){
+    //anti_debug();
+    JNIEnv* env;
+    if (vm->GetEnv((void**)(&env), JNI_VERSION_1_6) != JNI_OK)
+
+    {
+        return -1;
+    }
+    assert(env != NULL);
+
+    if (!registerNatives(env)) {//注册
+        return -1;
+    }
+
+    return JNI_VERSION_1_6;
+}
+#ifdef __cpluscplus
+}
+#endif

@@ -1,5 +1,6 @@
 package demo.rsa.gkbn.rsademo;
 
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -25,22 +26,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final TextView tv = (TextView) findViewById(R.id.sample_text);
-
+        tv.setText(new JniDemo().getStringFromNative());
         Button rsa = (Button) findViewById(R.id.button);
         Button des = (Button) findViewById(R.id.button5);
 
         Button aes = (Button) findViewById(R.id.button6);
         Button md5 = (Button) findViewById(R.id.button7);
         Button base64 = (Button) findViewById(R.id.button8);
-        JniDemo jniDemo = new JniDemo();
+        Button test3des = (Button) findViewById(R.id.test3des);
+        final JniDemo jniDemo = new JniDemo();
 
-        Toast.makeText(this, jniDemo.encrypt3DES("sadf"), Toast.LENGTH_SHORT).show();
-        Log.d("native",jniDemo.encrypt3DES("sadf"));
-        try {
-            Log.d("java",encryptTextURL("sadf","i^FgWOB8IsN47zja^^&eSBup"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        test3des.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, jniDemo.encrypt3DES("sadf"), Toast.LENGTH_SHORT).show();
+                try {
+                    String text = "aslkdfjlasf";
+                    String javaEncrypt= "";
+                    String nativeEncrypt = "";
+                    byte[] bytesJava = encryptTextURL(text,"i^FgWOB8IsN47zja^^&eSBup").getBytes();
+                    byte[]bytesNative= jniDemo.encryptDES(text).getBytes();
+                    for (int i = 0;i < bytesJava.length;i ++){
+                        javaEncrypt += Integer.toHexString(bytesJava[i]);
+                    }
+                    for (int i = 0;i < bytesNative.length;i ++){
+                        nativeEncrypt += Integer.toHexString(bytesNative[i]);
+                    }
+                    Log.d("native1",nativeEncrypt);
+                    Log.d("jav   a",javaEncrypt);
+                    Log.d("native2",jniDemo.encrypt3DES(text));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         rsa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 tv.setText(new JniDemo().decryptBase64(new JniDemo().encryptBase64("BASE64加密测试—BASE64加密测试-BASE64加密测试-BASE64加密测试")));
             }
         });
+
+
 
     }
 

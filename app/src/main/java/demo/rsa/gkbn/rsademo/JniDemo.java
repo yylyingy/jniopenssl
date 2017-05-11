@@ -5,33 +5,27 @@ package demo.rsa.gkbn.rsademo;
  */
 
 public class JniDemo {
+    public native String MD5(String msg);
+
+    public native String encodeAES(String msg);
+
+    public native String decodeAES(String msg);
 
 
+    public native String encryptDES(String msg);
 
-    public   native  String MD5(String msg);
+    public native String decryptDES(String msg);
 
-    public    native  String encodeAES(String msg);
+    public native String decryptRSA(String msg);
 
-    public    native  String decodeAES(String msg);
+    public native String encryptRSA(String msg);
 
+    public native String encryptBase64(String msg);
 
-    public    native  String encryptDES(String msg);
-
-    public    native  String decryptDES(String msg);
-
-    public    native  String decryptRSA(String msg);
-
-    public    native  String encryptRSA(String msg);
-
-    public  native  String  encryptBase64(String msg);
-
-    public  native  String  decryptBase64(String msg);
+    public native String decryptBase64(String msg);
     public native String encrypt3DES(String string);
-
+    public native String getStringFromNative();
     static {
         System.loadLibrary("native");
     }
-
-
-
 }
