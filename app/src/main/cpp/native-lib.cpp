@@ -27,6 +27,7 @@ jstring decryptBase64(JNIEnv *env, jobject instance, jstring msg_);
 jstring encryptBase64(JNIEnv *env, jobject instance, jstring msg_);
 jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_);
 jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_);
+int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* keyin, int keyin_len);
 
 static JNINativeMethod gMethods[] = {
         {"getStringFromNative"  ,"()Ljava/lang/String;", (void*)getStringc},
@@ -42,7 +43,6 @@ static JNINativeMethod gMethods[] = {
         {"nativeDecryptRSA"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptRSA}
 };
 
-int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* keyin, int keyin_len);
 
 //__attribute ((visibility ("default")))
 //JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) //这是JNI_OnLoad的声明，必须按照这样的方式声明
@@ -54,7 +54,8 @@ int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* key
  * base64加密
  */
 
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -72,7 +73,8 @@ JNIEXPORT jstring encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * base64 解密
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -93,7 +95,8 @@ JNIEXPORT jstring decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * MD5加密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 jstring MD5(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -113,7 +116,8 @@ jstring MD5(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * AES加密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -138,7 +142,8 @@ JNIEXPORT jstring encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * AES解密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -161,7 +166,8 @@ JNIEXPORT jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
  */
 
 
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -186,7 +192,8 @@ JNIEXPORT jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
  *
  * DES解密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -211,7 +218,8 @@ JNIEXPORT jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * RSA解密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -232,7 +240,8 @@ JNIEXPORT jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 /**
  * RSA  加密算法
  */
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 
     const char *msg = env->GetStringUTFChars(msg_, 0);
@@ -252,7 +261,8 @@ JNIEXPORT jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 
 }
 
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
+__attribute__((section (".tdtext")))
 JNIEXPORT jstring encrypt3DES(JNIEnv *env, jobject instance, jstring msg_){
     const char* datain;
     char * dataout = (char *) malloc(32);
@@ -420,7 +430,7 @@ jint JNI_OnLoad(JavaVM* vm,void* reserved){
     return JNI_VERSION_1_6;
 }
 
-__attribute ((visibility ("default")))
+//__attribute ((visibility ("default")))
 JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved) {
     //   __android_log_print(ANDROID_LOG_ERROR, "tag", "library was unload");
 }

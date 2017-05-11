@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "demo.rsa.gkbn.rsademo"
         minSdkVersion 15
@@ -10,13 +10,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++11 -frtti -fexceptions"
-                abiFilters "armeabi"
-
-            }
-
+//        externalNativeBuild {
+//            cmake {
+//                cppFlags "-std=c++11 -frtti -fexceptions"
+//
+//            }
+//        }
+        ndk{
+            abiFilters 'armeabi-v7a','armeabi'
         }
     }
     buildTypes {
