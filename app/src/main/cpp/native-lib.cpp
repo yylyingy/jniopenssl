@@ -21,13 +21,25 @@ jstring MD5       (JNIEnv *env, jobject instance, jstring msg_);
 jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_);
 jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_);
 jstring encrypt3DES(JNIEnv *env, jobject instance, jstring msg_);
-static JNINativeMethod gMethods[] = {
-        { "getStringFromNative" , "()Ljava/lang/String;", (void*)getStringc},
-        { "MD5"                 , "(Ljava/lang/String;)Ljava/lang/String;",(void*)MD5},
-        {"encryptDES"           , "(Ljava/lang/String;)Ljava/lang/String;",(void*)encryptDES},
-        {"decryptDES"           , "(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptDES},
-        {"encrypt3DES"          , "(Ljava/lang/String;)Ljava/lang/String;",(void*)encrypt3DES}
+jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_);
+jstring encodeAES(JNIEnv *env, jobject instance, jstring msg_);
+jstring decryptBase64(JNIEnv *env, jobject instance, jstring msg_);
+jstring encryptBase64(JNIEnv *env, jobject instance, jstring msg_);
+jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_);
+jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_);
 
+static JNINativeMethod gMethods[] = {
+        {"getStringFromNative"  ,"()Ljava/lang/String;", (void*)getStringc},
+        {"nativeMD5"            ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)MD5},
+        {"nativeEncryptDES"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)encryptDES},
+        {"nativeDecryptDES"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptDES},
+        {"nativeEncrypt3DES"    ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)encrypt3DES},
+        {"nativeDecodeAES"      ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decodeAES},
+        {"nativeEncodeAES"      ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)encodeAES},
+        {"nativeDecryptBase64"  ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptBase64},
+        {"nativeEncryptBase64"  ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)encryptBase64},
+        {"nativeEncryptRSA"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)encryptRSA},
+        {"nativeDecryptRSA"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptRSA}
 };
 
 int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* keyin, int keyin_len);
@@ -38,20 +50,12 @@ int xxx_3des_encrypt(const char* datain, char* dataout, const unsigned char* key
 //
 //    return JNI_VERSION_1_4; //这里很重要，必须返回版本，否则加载会失败。
 //}
-__attribute ((visibility ("default")))
-JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved) {
-    //   __android_log_print(ANDROID_LOG_ERROR, "tag", "library was unload");
-}
-
-
-
 /**
  * base64加密
  */
 
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring encryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
@@ -69,8 +73,7 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_encryptBase64(JNIEnv *env, jobject instance, 
  * base64 解密
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring decryptBase64(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
@@ -111,8 +114,7 @@ jstring MD5(JNIEnv *env, jobject instance, jstring msg_) {
  * AES加密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
@@ -137,8 +139,7 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_encodeAES(JNIEnv *env, jobject instance, jstr
  * AES解密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
@@ -211,8 +212,7 @@ JNIEXPORT jstring decryptDES(JNIEnv *env, jobject instance, jstring msg_) {
  * RSA解密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
+JNIEXPORT jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
     std::string msgC;
@@ -233,9 +233,7 @@ Java_demo_rsa_gkbn_rsademo_JniDemo_decryptRSA(JNIEnv *env, jobject instance, jst
  * RSA  加密算法
  */
 __attribute ((visibility ("default")))
-JNIEXPORT jstring JNICALL
-Java_demo_rsa_gkbn_rsademo_JniDemo_encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
-
+JNIEXPORT jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 
     const char *msg = env->GetStringUTFChars(msg_, 0);
 
@@ -421,6 +419,12 @@ jint JNI_OnLoad(JavaVM* vm,void* reserved){
 
     return JNI_VERSION_1_6;
 }
+
+__attribute ((visibility ("default")))
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM *vm, void *reserved) {
+    //   __android_log_print(ANDROID_LOG_ERROR, "tag", "library was unload");
+}
+
 #ifdef __cpluscplus
 }
 #endif

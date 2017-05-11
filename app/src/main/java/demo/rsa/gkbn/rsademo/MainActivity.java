@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity {
         test3des.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, jniDemo.encrypt3DES("sadf"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, jniDemo.nativeEncrypt3DES("sadf"), Toast.LENGTH_SHORT).show();
                 try {
                     String text = "aslkdfjlasf";
                     String javaEncrypt= "";
                     String nativeEncrypt = "";
                     byte[] bytesJava = encryptTextURL(text,"i^FgWOB8IsN47zja^^&eSBup").getBytes();
-                    byte[]bytesNative= jniDemo.encryptDES(text).getBytes();
+                    byte[]bytesNative= jniDemo.nativeEncryptDES(text).getBytes();
                     for (int i = 0;i < bytesJava.length;i ++){
                         javaEncrypt += Integer.toHexString(bytesJava[i]);
                     }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Log.d("native1",nativeEncrypt);
                     Log.d("jav   a",javaEncrypt);
-                    Log.d("native2",jniDemo.encrypt3DES(text));
+                    Log.d("native2",jniDemo.nativeEncrypt3DES(text));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -66,21 +66,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                tv.setText(new JniDemo().decryptRSA(new JniDemo().encryptRSA("RSA加密测试-RSA加密测试-RSA加密测试-RSA加密测试")));
+                tv.setText(new JniDemo().nativeDecryptRSA(new JniDemo().nativeEncryptRSA("RSA加密测试-RSA加密测试-RSA加密测试-RSA加密测试")));
             }
         });
 
         des.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv.setText(new JniDemo().decryptDES(new JniDemo().encryptDES("DES加密测试-DES加密测试-DES加密测试-DES加密测试")));
+                tv.setText(new JniDemo().nativeDecryptDES(new JniDemo().nativeEncryptDES("DES加密测试-DES加密测试-DES加密测试-DES加密测试")));
             }
         });
 
         aes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv.setText(new JniDemo().decodeAES(new JniDemo().encodeAES("AES加密测试-AES加密测试-AES加密测试-AES加密测试")));
+                tv.setText(new JniDemo().nativeDecodeAES(new JniDemo().nativeEncodeAES("AES加密测试-AES加密测试-AES加密测试-AES加密测试")));
             }
         });
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         md5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv.setText(new JniDemo().MD5("MD5加密测试—MD5加密测试-MD5加密测试-MD5加密测试"));
+                tv.setText(new JniDemo().nativeMD5("MD5加密测试—MD5加密测试-MD5加密测试-MD5加密测试"));
             }
         });
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                tv.setText(new JniDemo().decryptBase64(new JniDemo().encryptBase64("BASE64加密测试—BASE64加密测试-BASE64加密测试-BASE64加密测试")));
+                tv.setText(new JniDemo().nativeDecryptBase64(new JniDemo().nativeEncryptBase64("BASE64加密测试—BASE64加密测试-BASE64加密测试-BASE64加密测试")));
             }
         });
 
