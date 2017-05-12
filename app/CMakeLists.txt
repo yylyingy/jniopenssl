@@ -25,7 +25,7 @@ native SHARED
 
 find_library( log-lib log)
 
-TARGET_LINK_LIBRARIES(  native  libcrypto.a libssl.a ${log-lib}) # 链接动态库
+TARGET_LINK_LIBRARIES(  native optimized libcrypto.a libssl.a ${log-lib} ) # 链接动态库
 
 
 

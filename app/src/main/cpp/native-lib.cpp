@@ -43,13 +43,6 @@ static JNINativeMethod gMethods[] = {
         {"nativeDecryptRSA"     ,"(Ljava/lang/String;)Ljava/lang/String;",(void*)decryptRSA}
 };
 
-
-//__attribute ((visibility ("default")))
-//JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) //这是JNI_OnLoad的声明，必须按照这样的方式声明
-//{
-//
-//    return JNI_VERSION_1_4; //这里很重要，必须返回版本，否则加载会失败。
-//}
 /**
  * base64加密
  */
@@ -163,9 +156,9 @@ JNIEXPORT jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
 
 /**
  * DES加密算法
+ * @param msg_ 待加密明文
+ * @return 加密后的密文
  */
-
-
 //__attribute ((visibility ("default")))
 __attribute__((section (".tdtext")))
 JNIEXPORT jstring encryptDES(JNIEnv *env, jobject instance, jstring msg_) {
