@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         final TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(new JniDemo().getStringFromNative());
         Button rsa = (Button) findViewById(R.id.button);
@@ -42,20 +41,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, jniDemo.nativeEncrypt3DES("sadf"), Toast.LENGTH_SHORT).show();
                 try {
-                    String text = "aslkdfjlasf";
-                    String javaEncrypt= "";
-                    String nativeEncrypt = "";
-                    byte[] bytesJava = encryptTextURL(text,"i^FgWOB8IsN47zja^^&eSBup").getBytes();
-                    byte[]bytesNative= jniDemo.nativeEncryptDES(text).getBytes();
-                    for (int i = 0;i < bytesJava.length;i ++){
-                        javaEncrypt += Integer.toHexString(bytesJava[i]);
-                    }
-                    for (int i = 0;i < bytesNative.length;i ++){
-                        nativeEncrypt += Integer.toHexString(bytesNative[i]);
-                    }
-                    Log.d("native1",nativeEncrypt);
-                    Log.d("jav   a",javaEncrypt);
-                    Log.d("native2",jniDemo.nativeEncrypt3DES(text));
+                    String text = "aslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasfaslkdfjlasf";
+                    String cryptoText = "BYySbdLNy0PWotZZNRj6Xx09Kndygnups2kN0O6qOVTul/scOlNreKrRFHIoI/J/" +
+                            "                                                              mwnFVywVVemwnPJI24vBz8bm/v5LfxU5FVLIsP3/KCRpWV06n8zBSAWMkm3SzctD" +
+                            "                                                              1qLWWTUY+l8dPSp3coJ7qbNpDdDuqjlU7pf7HDpTa3iq0RRyKCPyf5sJxVcsFVXp" +
+                            "                                                              sJzySNuLwc/G5v7+S38VORVSyLD9/ygkaVldOp/MwUgFjJJt0s3LQ9ai1lk1GPpf" +
+                            "                                                              HT0qd3KCe6mzaQ3Q7qo5VO6X+xw6U2t4qtEUcigj8n+bCcVXLBVV6bCc8kjbi8HP" +
+                            "                                                              xub+/kt/FTkVUsiw/f8oJGlZXTqfzMFIBYySbdLNy0PWotZZNRj6Xx09Kndygnup" +
+                            "                                                              s2kN0O6qOVTul/scOlNreKrRFHIoI/J/mwnFVywVVemwnPJI24vBz8bm/v5LfxU5" +
+                            "                                                              FVLIsP3/KCRpWV06n8zBSAWMkm3SzctD1qLWWTUY+l8dPSp3coJ7qbNpDdDuqjlU" +
+                            "                                                              7pf7HDpTa3iq0RRyKCPyf5sJxVcsFVXpsJzySNuLwc/G5v7+S38VORVSyLD9/ygk" +
+                            "                                                              aVldOp/MwUgFjJJt0s3LQ9ai1lk1GPpfHT0qd3KCe6mzaQ3Q7qo5VO6X+xw6U2t4" +
+                            "                                                              qtEUcigj8n+bCcVXLBVV6bCc8kjbi8HPxub+/kt/FTkVUsiw/f8oJGlZXTqfzMFI" +
+                            "                                                              BYySbdLNy0PWotZZNRj6Xx09Kndygnups2kN0O6qOVTul/scOlNreJ9BiTosY/ub";
+                    String javaEncrypt   ;
+                    String nativeEncrypt ;
+                    javaEncrypt = encryptTextURL(text,"i^FgWOB8IsN47zja^^&eSBup");
+                    nativeEncrypt = jniDemo.nativeEncryptDES(text);
+//                    javaEncrypt = javaEncrypt.replaceAll("\n","");
+//                    nativeEncrypt = nativeEncrypt.replaceAll("\n","");
+                    Log.d("cryptoisequals",javaEncrypt.equals(nativeEncrypt) + "");
+                    Log.d("compare",javaEncrypt.compareTo(nativeEncrypt) + "");
+                    Log.d("java:",javaEncrypt);
+                    Log.d("nati:",nativeEncrypt);
+                    Log.d("nativeDe:",jniDemo.nativeDecryptDES(cryptoText));
+                    Log.d("isEquals",jniDemo.nativeDecryptDES(nativeEncrypt).equals(text) + "");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

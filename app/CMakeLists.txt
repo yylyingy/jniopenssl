@@ -17,15 +17,32 @@ LINK_DIRECTORIES(src/main/cpp/openssllib/)
 ADD_LIBRARY(
 native SHARED
     src/main/cpp/native-lib.cpp
-    src/main/cpp/MyRSA.cpp
+    #src/main/cpp/MyRSA.cpp
     src/main/cpp/MyBASE64.cpp
     src/main/cpp/My3DES.cpp
-    src/main/cpp/MyMD5.cpp
-    src/main/cpp/MyAES.cpp)
+    #src/main/cpp/MyMD5.cpp
+    #src/main/cpp/MyAES.cpp
+    )
+
+ADD_LIBRARY(
+    libcrypto
+    SHARED
+    IMPORTED
+)
+set_target_properties(
+    libcrypto
+    PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libcrypto.so
+)
 
 find_library( log-lib log)
 
-TARGET_LINK_LIBRARIES(  native  libcrypto.a libssl.a ${log-lib}) # 链接动态库
+TARGET_LINK_LIBRARIES(
+    native
+    #libcrypto.a
+    #libssl.a
+    libcrypto
+ ${log-lib}) # 链接动态库
 
 
 

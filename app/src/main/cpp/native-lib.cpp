@@ -104,7 +104,7 @@ jstring MD5(JNIEnv *env, jobject instance, jstring msg_) {
     std::string msgC;
     msgC.assign(msg);
 
-    std::string f = MyMD5::encryptMD5(msgC);
+    std::string f ;//= MyMD5::encryptMD5(msgC);
 
     env->ReleaseStringUTFChars(msg_, msg);
 
@@ -125,7 +125,7 @@ JNIEXPORT jstring encodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     msgC.assign(msg);
 
 
-    std::string aes = MyAES::encodeAES("1234567812345678", msgC);//密码长度必须大于16 位
+    std::string aes ;//= MyAES::encodeAES("1234567812345678", msgC);//密码长度必须大于16 位
 
 
     std::string base64 = MyBASE64::base64_encodestring(aes);
@@ -154,7 +154,7 @@ JNIEXPORT jstring decodeAES(JNIEnv *env, jobject instance, jstring msg_) {
     std::string base64 = MyBASE64::base64_decodestring(msgC);
 
 
-    std::string aes = MyAES::decodeAES("1234567812345678", base64);
+    std::string aes ;//= MyAES::decodeAES("1234567812345678", base64);
 
     env->ReleaseStringUTFChars(msg_, msg);
 
@@ -228,7 +228,7 @@ JNIEXPORT jstring decryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
 
     std::string base64 = MyBASE64::base64_decodestring(msgC);
 
-    std::string rsa = MyRSA::decryptRSA(base64);
+    std::string rsa;// = MyRSA::decryptRSA(base64);
 
 
     env->ReleaseStringUTFChars(msg_, msg);
@@ -249,7 +249,7 @@ JNIEXPORT jstring encryptRSA(JNIEnv *env, jobject instance, jstring msg_) {
     std::string msgC;
     msgC.assign(msg);
 
-    std::string rsa = MyRSA::encryptRSA(msgC, NULL);
+    std::string rsa ;//= MyRSA::encryptRSA(msgC, NULL);
 
 
     std::string base64 = MyBASE64::base64_encodestring(rsa);

@@ -133,11 +133,11 @@ std::string My3DES::getKey(){
 
     if (NULL != dst) {
 
-       static std::string eresult;
-        eresult.clear();
-
-        eresult.assign(
-                (char *) dst);
+       std::string eresult((char *)dst,len);
+//        eresult.clear();
+//
+//        eresult.assign(
+//                (char *) dst);
        free(dst);
         return eresult;
 
@@ -243,7 +243,7 @@ std::string My3DES::getKey(){
     if (NULL != dst) {
 
 
-        static std::string dresult;
+        std::string dresult;
 
         dresult.clear();
 
