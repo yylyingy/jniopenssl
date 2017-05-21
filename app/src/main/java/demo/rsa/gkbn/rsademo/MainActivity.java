@@ -12,10 +12,18 @@ import android.widget.Toast;
 
 import java.security.Key;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+
+import demo.rsa.gkbn.rsademo.bean.dao.User;
+import demo.rsa.gkbn.rsademo.bean.dao.UserDao;
+import demo.rsa.gkbn.rsademo.sqlcore.BaseDaoManager;
+import demo.rsa.gkbn.rsademo.sqlcore.IBaseDao;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         Button base64 = (Button) findViewById(R.id.button8);
         Button test3des = (Button) findViewById(R.id.test3des);
         final JniDemo jniDemo = new JniDemo();
-
-
         test3des.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        insert();
     }
 
     public static byte[] des3EncodeECB(byte[] key, byte[] data) throws Exception {
@@ -128,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
 
         byte[] values = des3EncodeECB(key.getBytes(), plainText.getBytes("UTF-8"));
         return new String(Base64.encode(values, Base64.DEFAULT), "UTF-8");
+    }
+    IBaseDao<User> userDao;
+//
+    public void insert(){
+        User user = new User();
+        user.setName("yyl");
+        user.setPassword("ajsdlfjs");
+        userDao = BaseDaoManager.getInstance(this).getBaseDao(UserDao.class,User.class);
+        userDao.insert(user);
     }
 
 
