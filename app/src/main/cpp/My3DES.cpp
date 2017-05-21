@@ -33,6 +33,7 @@ std::string My3DES::getKey(){
 
 /*
     * 有自定义密码的3DES 加密
+    * /ECB/PKCS7Padding 填充方式
    */
  std::string  My3DES::encryptDES(const std::string& data , std::string k, int *lenreturn){
 
@@ -145,8 +146,6 @@ std::string My3DES::getKey(){
 
 
     return NULL;
-
-
 }
  std::string    My3DES::decryptDES(const std::string& data,  std::string  k, int data_len){
 
