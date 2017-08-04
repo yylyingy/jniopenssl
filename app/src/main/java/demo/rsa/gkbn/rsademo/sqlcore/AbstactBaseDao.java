@@ -24,6 +24,7 @@ public abstract class AbstactBaseDao <T> implements IBaseDao<T> {
     private String tabName;
     //映射关系
     private HashMap<String,Field> cacheMap;
+
     public void init(SQLiteDatabase sqLiteDatabase,Class entityClass){
         this.sqLiteDatabase = sqLiteDatabase;
         this.entityClass = entityClass;
